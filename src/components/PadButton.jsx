@@ -10,13 +10,15 @@ export default function ButtonPad({ note }) {
 
 
     useEffect(() => {
-        player.current = new Howl({
-            src: `/pads/${directory}/${note}.mp3`,
-            loop: true,
-            onload: () => {
-                setLoading(false)
-            }
-        })
+        if (["C", "D", "E"].includes(note)) {
+            player.current = new Howl({
+                src: `/pads/${directory}/${note}.mp3`,
+                loop: true,
+                onload: () => {
+                    setLoading(false)
+                }
+            })
+        }
 
         return () => {
             player.current = null
