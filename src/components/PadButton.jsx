@@ -1,98 +1,24 @@
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
-import { Howl, Howler } from 'howler'
-import { clearButtons } from "../helpers";
-import { FaFolderOpen } from "react-icons/fa";
+import { clearButtons } from "../helpers"
 
-const ButtonPad = forwardRef((props, ref) => {
+export default function ButtonPad({ note }) {
+    const isFlat = String(note).includes("#")
 
-    const [file, setFile] = useState('')
-    const soundRef = useRef();
-    const checkInputRef = useRef();
-    const body = document.querySelector('body');
-
-    useImperativeHandle(ref, () => {
-        return {
-            getFile: () => {
-                return file
-            }
-        }
-    })
-
-    const playSound = (e) => {
-
-        if (file === '') return e.target.checked = false;
-
+    const handlePlay = (e) => {
         clearButtons(e.target)
-
-        if (!e.target.checked) return stopSound()
-
-        Howler.stop()
-
-        soundRef.current.volume(1)
-        soundRef.current.play()
-
-    }
-
-    const sleep = (ms) => {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve()
-            }, ms)
-        })
-    }
-
-    const stopSound = async () => {
-        for (let i = 0; i < 20; i++) {
-            await sleep(20)
-            if (soundRef.current.volume() > 0) {
-                soundRef.current.volume(soundRef.current.volume() - 0.05)
-                console.log(soundRef.current.volume())
-            }
-        }
-        Howler.stop()
-    }
-
-    const handleOnChange = (e) => {
-        if (e.target.files.length > 0) {
-            const file = e.target.files[0]
-            const reader = new FileReader()
-            reader.onload = (e) => {
-                setFile({
-                    name: file.name.substring(0, file.name.length - 4),
-                    src: e.target.result
-                })
-
-                soundRef.current = new Howl({
-                    src: [e.target.result],
-                    format: [file.name.split('.').pop().toLowerCase()],
-                    volume: 1,
-                    onplay: () => {
-                        console.log('play')
-                        body.classList.add('playing')
-                    },
-                    onend: () => {
-                        console.log('end')
-                        checkInputRef.current.checked = false
-                        body.classList.remove('playing')
-                    }
-                })
-            }
-            reader.readAsDataURL(file)
-        }
     }
 
     return (
-        <button className="padbutton">
-            <input ref={checkInputRef} type="checkbox" name='note' onChange={playSound} />
-            <div className='text-content'>
-                <span>{file.name}</span>
-                <div className='fileInput'>
-                    <input type="file" name='file' onChange={handleOnChange} />
-                    <FaFolderOpen className="icon" size={24} />
-                </div>
+        <button className={`relative ${isFlat ? ' bg-gray-950' : 'bg-gray-900'} overflow-hidden border rounded-lg`}>
+            <input
+                className={`w-full h-full peer opacity-0 absolute top-0 left-0`}
+                onChange={handlePlay}
+                title={note}
+                type="checkbox"
+                name='note'
+            />
+            <div className='w-full h-full flex items-center justify-center transition-colors ease-in-out duration-300 peer-checked:bg-blue-500'>
+                <span className="text-4xl font-medium">{note}</span>
             </div>
         </button>
     )
-})
-
-export default ButtonPad
+}
