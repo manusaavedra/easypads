@@ -14,6 +14,7 @@ export default function ButtonPad({ note }) {
             player.current = new Howl({
                 src: `/pads/${directory}/${note}.mp3`,
                 loop: true,
+                html5: true,
                 onload: () => {
                     setLoading(false)
                 }
@@ -36,8 +37,8 @@ export default function ButtonPad({ note }) {
     }
 
     const clearButtons = (currentCheckbox) => {
-        Howler.stop()
         const buttons = document.getElementsByName('note')
+        Howler.stop()
         buttons.forEach(button => {
             if (currentCheckbox !== button)
                 button.checked = false
