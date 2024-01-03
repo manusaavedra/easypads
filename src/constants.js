@@ -1,1 +1,1 @@
-export const directories = ["default"]
+export const directories = ["default", "worship"]

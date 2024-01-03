@@ -1,39 +1,20 @@
-import { useEffect, useRef, useState } from "react"
-import { Howl, Howler } from "howler"
-import { useStore } from "../store"
+import { Howler } from "howler"
+import { useStorePads } from "../store"
+import useSoundPlayer from "../hooks/useSoundPlayer"
 
 export default function ButtonPad({ note }) {
-    const [loading, setLoading] = useState(true)
-    const { directory } = useStore()
+    const { directory } = useStorePads()
+    const { loading, play, stop } = useSoundPlayer({ directory, note })
     const isFlat = String(note).includes("#")
-    const player = useRef()
-
-
-    useEffect(() => {
-        if (["C", "D", "E"].includes(note)) {
-            player.current = new Howl({
-                src: `/pads/${directory}/${note}.mp3`,
-                loop: true,
-                html5: true,
-                onload: () => {
-                    setLoading(false)
-                }
-            })
-        }
-
-        return () => {
-            player.current = null
-        }
-    }, [note, directory])
 
     const handlePlay = (e) => {
         clearButtons(e.target)
 
         if (e.target.checked) {
-            player.current.play()
-        } else {
-            player.current.stop()
+            return play()
         }
+
+        stop()
     }
 
     const clearButtons = (currentCheckbox) => {
