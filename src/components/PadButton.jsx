@@ -38,12 +38,12 @@ export default function ButtonPad({ note }) {
             <div className='w-full h-full flex items-center justify-center transition-colors ease-in-out duration-300 peer-checked:bg-indigo-500'>
                 <span className="text-4xl font-medium">
                     {note}
-                    {
-                        loading && (
-                            <div className="w-4 h-4 border-2 border-l-transparent border-gray-800 animate-spin rounded-full" />
-                        )
-                    }
                 </span>
+                {
+                    loading && (
+                        <div className="w-4 h-4 border-2 border-l-transparent border-gray-800 animate-spin rounded-full" />
+                    )
+                }
             </div>
         </div>
     )
