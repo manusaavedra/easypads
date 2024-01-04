@@ -4,13 +4,18 @@ import { setPreciseTimeout } from "../PreciseTimeout"
 
 export default function useMetronome() {
     const [bpm, setBpm] = useState(120)
-    const [measures, setMeasures] = useState(4)
     const [isRunning, setIsRunning] = useState(false)
+
     const beat1 = useRef(null)
     const beat2 = useRef(null)
     const interval = useRef(null)
+
     const measureCount = useRef(4)
-    const count = useRef(1)
+    const [measures, setMeasures] = useState(4)
+
+    const [count, setCount] = useState(measureCount.current)
+    const counter = useRef(measureCount.current)
+
     const taps = []
 
     useEffect(() => {
@@ -31,23 +36,24 @@ export default function useMetronome() {
     useEffect(() => {
         const initialBpm = 60000 / 120
         interval.current = new setPreciseTimeout(() => {
-            if (count.current === 1) {
+            if (counter.current === measureCount.current) {
                 beat1.current.play();
             }
 
             beat2.current.play();
-            count.current = (count.current % measureCount.current) + 1
 
-            return () => {
-                count.current = 1
-            }
+            setCount(() => counter.current)
+            counter.current = (counter.current % measureCount.current) + 1
+
         }, initialBpm, { inmediate: true })
 
         return () => {
             if (interval.current) {
                 interval.current.stop()
-                interval.current = null
                 setIsRunning(() => false)
+
+                setCount(() => measureCount.current)
+                counter.current = measureCount.current
             }
         }
     }, [])
@@ -61,9 +67,11 @@ export default function useMetronome() {
 
     const stop = () => {
         if (interval.current) {
-            interval.current.stop()
-            count.current = 1
             setIsRunning(false)
+            interval.current.stop()
+
+            setCount(() => measureCount.current)
+            counter.current = measureCount.current
         }
     }
 
@@ -121,6 +129,7 @@ export default function useMetronome() {
         stop,
         isRunning,
         measures,
+        count,
         setMeasureCount,
         setInterval
     }
