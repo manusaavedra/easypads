@@ -27,7 +27,7 @@ export default function ButtonPad({ note }) {
     }
 
     return (
-        <div className={`relative ${isFlat ? ' bg-gray-950' : 'bg-gray-900'} overflow-hidden border border-gray-700 rounded-lg`}>
+        <div className={`relative ${isFlat ? ' bg-neutral-950' : 'bg-neutral-950 bg-opacity-60'} overflow-hidden border border-gray-700 rounded-lg`}>
             <input
                 className={`w-full h-full peer opacity-0 absolute top-0 left-0`}
                 onChange={handlePlay}
