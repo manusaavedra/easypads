@@ -7,7 +7,7 @@ const useSoundPlayer = ({ directory, note }) => {
 
     useEffect(() => {
         player.current = new Howl({
-            src: `/pads/${directory}/${note}.ogg`,
+            src: `/pads/${directory}/${note}.mp3`,
             loop: true,
             html5: true,
             onload: () => {
