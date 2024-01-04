@@ -1,153 +1,60 @@
-import { useEffect, useRef } from "react"
-import { Howl } from "howler"
-import { useStoreBPM } from "../store"
 import { BsPlay, BsStop } from "react-icons/bs"
-import { setPreciseTimeout } from "../PreciseTimeout"
+import useMetronome from "../hooks/useMetronome"
+import ModalButton from "./ModalButton"
+import InputNumber from "./InputNumber"
 
-function useMetronome() {
-    const { bpm, isRunning, measureCount } = useStoreBPM()
-    const beat1 = useRef()
-    const beat2 = useRef()
-    const count = useRef(1)
-    const interval = useRef()
-    const taps = []
-
-    useEffect(() => {
-        const initialBpm = 60000 / useStoreBPM.getState().bpm
-
-        beat1.current = new Howl({
-            src: ['/metronome/1.mp3'],
-        }).stereo(-1)
-
-        beat2.current = new Howl({
-            src: ['/metronome/2.mp3'],
-        }).stereo(-1)
-
-        interval.current = new setPreciseTimeout(() => {
-            if (count.current === 1) {
-                beat1.current.play();
-            }
-
-            beat2.current.play();
-            count.current = (count.current % measureCount) + 1
-        }, initialBpm, { inmediate: true })
-
-        return () => {
-            beat1.current.unload()
-            beat2.current.unload()
-            useStoreBPM.setState({ isRunning: false })
-            if (interval.current) {
-                interval.current.stop()
-            }
-        }
-    }, [measureCount])
-
-    useEffect(() => {
-        if (interval.current) {
-            interval.current.setInterval(60000 / bpm)
-        }
-    }, [bpm])
-
-    const play = () => {
-        if (interval.current) {
-            interval.current.start()
-            useStoreBPM.setState({ isRunning: true })
-        }
-    }
-
-    const stop = () => {
-        if (interval.current) {
-            interval.current.stop()
-            useStoreBPM.setState({ isRunning: false })
-        }
-    }
-
-    const calculateBPM = () => {
-        const timeDifferences = []
-        const millisecondsInMinute = 60000
-
-        if (taps.length < 2) return 0
-
-        for (let i = 1; i < taps.length; i++) {
-            const diff = taps[i] - taps[i - 1]
-            timeDifferences.push(diff)
-        }
-
-        const averageTimeDiff = timeDifferences.reduce((acc, val) => {
-            return acc + val
-        }, 0)
-
-        const bpm = Math.round(
-            millisecondsInMinute /
-            (averageTimeDiff / timeDifferences.length)
-        )
-
-        return bpm
-    }
-
-    function tap() {
-        const timestamp = Date.now()
-        taps.push(timestamp)
-
-        const bpm = calculateBPM()
-
-        if (bpm > 25 && bpm < 300) {
-            useStoreBPM.setState({ bpm })
-        }
-    }
-
-    return {
+export default function Metronome() {
+    const {
         bpm,
         tap,
         play,
         stop,
         isRunning,
-        measureCount,
+        measures,
+        setMeasureCount,
         setInterval
-    }
-}
-
-export default function Metronome() {
-    const { bpm, play, stop, isRunning, measureCount, tap } = useMetronome()
+    } = useMetronome()
 
     const handleChange = (e) => {
         e.preventDefault()
         const beatPerMinutes = Number(e.target.value)
         if (beatPerMinutes >= 25 && beatPerMinutes <= 300) {
-            useStoreBPM.setState({ bpm: beatPerMinutes })
+            setInterval(beatPerMinutes)
         }
     }
 
-    const handleMeasureChange = (e) => {
-        e.preventDefault()
-        const measure = Number(e.target.value)
+    const handleMeasureChange = (value) => {
+        const measure = Number(value)
         if (measure >= 2 && measure <= 12) {
-            useStoreBPM.setState({ measureCount: measure })
+            setMeasureCount(measure)
         }
     }
 
     return (
         <div className="flex items-stretch gap-2">
-            <div className="bg-neutral-900 flex items-stretch rounded-sm border border-neutral-950">
-                <input
-                    type="number"
-                    className="w-20 font-semibold rounded-none bg-inherit text-xl py-1"
-                    onChange={handleChange}
-                    min={30}
-                    max={300}
-                    value={bpm}
-                />
-                <div className=" flex items-center gap-2 p-1">
-                    <span>BPM</span>
-                    <select onChange={handleMeasureChange} value={measureCount} className="bg-inherit">
-                        {
-                            Array.from({ length: 12 }).map((_, i) => i + 1).slice(1).map((measure) => (
-                                <option className="text-black" value={measure}>{measure}</option>
-                            ))
-                        }
-                    </select>
+            <ModalButton buttonContent={`${bpm} bpm`}>
+                <div className="flex flex-col items-center rounded-sm">
+                    <div className="flex flex-col items-center">
+                        <span className="text-base bg-gray-600 text-gray-900 font-semibold px-2 rounded-md">bpm</span>
+                        <span className="font-semibold rounded-none bg-inherit text-7xl p-1 text-center">{bpm}</span>
+                    </div>
+                    <input className="w-full accent-blue-500" type="range" onInput={handleChange} value={bpm} min={30} max={300} />
+                    <div className="flex items-center justify-center gap-4">
+                        <button className="text-yellow-800" onClick={tap}>TAP</button>
+                        <button onClick={!isRunning ? play : stop} className={`${isRunning ? 'text-red-800' : 'text-green-800'}`}>
+                            {
+                                !isRunning
+                                    ? <BsPlay size={24} />
+                                    : <BsStop size={24} />
+                            }
+                        </button>
+                    </div>
+                    <div className=" flex flex-col items-center gap-2 p-1">
+                        <span>Compases</span>
+                        <InputNumber onChange={handleMeasureChange} min={2} max={8} value={measures} />
+                    </div>
                 </div>
-            </div>
+            </ModalButton>
             <button className="text-yellow-800" onClick={tap}>TAP</button>
             <button onClick={!isRunning ? play : stop} className={`${isRunning ? 'text-red-800' : 'text-green-800'}`}>
                 {
