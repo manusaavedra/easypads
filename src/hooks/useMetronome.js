@@ -106,6 +106,7 @@ export default function useMetronome() {
 
         if (bpm > 25 && bpm < 300) {
             setBpm(bpm)
+            setInterval(bpm)
         }
     }
 

@@ -1,14 +1,14 @@
 import './App.css';
 import ButtonPad from './components/PadButton';
 import Header from './components/Header';
-import Footer from './components/Footer';
+import ListLibraries from './components/ListLibraries';
+import { notes } from './constants';
 
 function App() {
-  const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-
   return (
-    <div className="h-screen grid grid-rows-[50px_1fr_50px]">
+    <div className="h-screen select-none grid grid-rows-[50px_50px_1fr]">
       <Header />
+      <ListLibraries />
       <div className="grid grid-cols-3 grid-rows-4 gap-2 h-full p-2 overflow-hidden">
         {
           notes.map((note) => (
@@ -19,7 +19,6 @@ function App() {
           ))
         }
       </div>
-      <Footer />
     </div>
   );
 }

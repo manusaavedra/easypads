@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export default function ModalButton({ children, buttonContent }) {
+export default function ModalButton({ children, buttonContent, className }) {
     const [open, setOpen] = useState(false)
 
     const handleOpen = () => {
@@ -13,7 +13,7 @@ export default function ModalButton({ children, buttonContent }) {
 
     return (
         <div>
-            <button onClick={handleOpen}>
+            <button className={className} onClick={handleOpen}>
                 {buttonContent}
             </button>
             <div className={`fixed ${open ? 'flex' : 'hidden'} z-50 items-center justify-center top-0 left-0 w-full h-screen`}>

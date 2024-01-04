@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef } from 'react'
 import { Howl } from 'howler'
 
-const useSoundPlayer = ({ directory, note }) => {
+const useSoundPlayer = ({ url, note }) => {
     const [loading, setLoading] = useState(true)
     const player = useRef(null)
 
     useEffect(() => {
+        setLoading(true)
+
         player.current = new Howl({
-            src: `/pads/${directory}/${note}.mp3`,
+            src: `${url}/${note}.mp3`,
             loop: true,
             html5: true,
             onload: () => {
@@ -18,11 +20,10 @@ const useSoundPlayer = ({ directory, note }) => {
         return () => {
             if (player.current) {
                 player.current.stop()
-                player.current.unload()
                 player.current = null
             }
         }
-    }, [directory, note])
+    }, [url, note])
 
     const play = () => {
         if (player.current) {

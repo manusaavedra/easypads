@@ -3,8 +3,8 @@ import { useStorePads } from "../store"
 import useSoundPlayer from "../hooks/useSoundPlayer"
 
 export default function ButtonPad({ note }) {
-    const { directory } = useStorePads()
-    const { loading, play, stop } = useSoundPlayer({ directory, note })
+    const { currentLibrary } = useStorePads()
+    const { loading, play, stop } = useSoundPlayer({ url: currentLibrary?.url, note })
     const isFlat = String(note).includes("#")
 
     const handlePlay = (e) => {

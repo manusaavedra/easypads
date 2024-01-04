@@ -1,11 +1,26 @@
+import { BsMenuApp, BsPlus } from "react-icons/bs";
+import SetList from "./SetList";
 import Metronome from "./Metronome";
+import ModalButton from "./ModalButton";
+import FormSetList from "./FormSetList";
 
-export default function Header({ children }) {
+export default function Header() {
     return (
-        <header className="w-full py-2 px-4 bg-neutral-900 shadow-md flex justify-between items-center">
+        <header className="w-full py-2 px-2 bg-neutral-900 shadow-md flex justify-between items-center">
             <h1 className="text-base font-semibold">EasyPads</h1>
-            {children}
             <Metronome />
+            <div className="flex items-center gap-2">
+                <ModalButton
+                    buttonContent={<BsPlus size={24} />}
+                >
+                    <FormSetList />
+                </ModalButton>
+                <ModalButton
+                    buttonContent={<BsMenuApp size={24} />}
+                >
+                    <SetList />
+                </ModalButton>
+            </div>
         </header>
     )
 }
