@@ -26,5 +26,6 @@ export const useStorePads = create(() => ({
 }))
 
 export const useStoreSongs = create(() => ({
+    setlist: [],
     songs: []
 }))
