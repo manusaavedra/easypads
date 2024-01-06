@@ -1,4 +1,4 @@
-import { FaThumbtack } from "react-icons/fa"
+import { FiMinus, FiPlus } from "react-icons/fi"
 import useSetlist from "../hooks/useSetlist"
 import { useStorePads } from "../store"
 import { useState } from "react"
@@ -37,11 +37,13 @@ export default function SetList() {
         }
     }
 
+    const noOp = () => { }
+
     return (
-        <div className="max-h-[400px] overflow-y-auto overflow-x-hidden">
-            <div className="mb-4 bg-neutral-800">
+        <div className="relative">
+            <div className="sticky top-0 left-0 mb-4 bg-neutral-800 w-full">
                 <input
-                    className="w-full md:text-2xl"
+                    className="w-full text-2xl"
                     type="search"
                     placeholder="Buscar..."
                     onChange={searchInput.handleChange}
@@ -55,18 +57,27 @@ export default function SetList() {
                     return (
                         <div
                             key={song.title}
-                            className={`flex ${isPlaying ? 'bg-indigo-500 text-white' : ''} active:bg-neutral-900 border-b border-neutral-700 py-2 px-1 items-center justify-between`}
+                            className={`flex ${isPlaying ? 'bg-indigo-400 text-indigo-900 active:bg-indigo-300' : 'active:bg-neutral-700'} border-b border-neutral-700 py-2 px-1 items-center justify-between`}
                         >
-                            <div onClick={() => handleSelectedSong(song)} className="w-full grid grid-cols-[40px_minmax(40px,1fr)_80px] gap-2">
+                            <div onClick={() => {
+                                isFixed ? handleSelectedSong(song) : noOp()
+                            }} className={`w-full ${!isFixed ? 'opacity-30' : ''} grid grid-cols-[40px_minmax(40px,1fr)_80px] gap-2`}>
                                 <span className="text-xs bg-black bg-opacity-50 text-white font-semibold rounded-md px-4 py-1">{song.key}</span>
                                 <div className="flex items-center gap-2">
                                     <h4 className="font-semibold truncate">{song.title}</h4>
+                                    {
+                                        isPlaying && (
+                                            <picture className="w-6">
+                                                <img className="" src="/sound.gif" alt="wave" />
+                                            </picture>
+                                        )
+                                    }
                                 </div>
-                                <span className={`text-neutral-500 ${isPlaying ? 'text-black' : ''} italic text-opacity-50`}>{song.library}</span>
+                                <span className={`text-neutral-500 ${isPlaying ? 'text-indigo-900' : ''} italic text-opacity-50`}>{song.library}</span>
                             </div>
                             <div className={`flex items-stretch gap-2`}>
-                                <button className={` ${isFixed ? 'bg-indigo-800' : ''} `} onClick={() => fixedSong(song)}>
-                                    <FaThumbtack size={16} />
+                                <button className="bg-transparent border-none" onClick={() => fixedSong(song)}>
+                                    {isFixed ? <FiMinus size={16} /> : <FiPlus size={16} />}
                                 </button>
                             </div>
                         </div>

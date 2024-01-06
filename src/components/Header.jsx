@@ -16,6 +16,7 @@ export default function Header() {
                     <FormSetList />
                 </ModalButton>
                 <ModalButton
+                    contentClassName="max-h-[500px] h-full overflow-y-auto"
                     buttonContent={<BsMenuApp size={24} />}
                 >
                     <SetList />
