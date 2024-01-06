@@ -40,7 +40,7 @@ export default function FormSetList() {
                     <select className="bg-neutral-950 py-1" name="library">
                         {
                             libraries.map((library) => (
-                                <option key={library.name} value={library.url}>
+                                <option key={library.name} value={library.name}>
                                     {library.name}
                                 </option>
                             ))

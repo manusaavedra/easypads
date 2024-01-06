@@ -1,20 +1,17 @@
 import { Howler } from "howler"
-import { useStorePads } from "../store"
-import useSoundPlayer from "../hooks/useSoundPlayer"
 
-export default function ButtonPad({ note }) {
-    const { currentLibrary } = useStorePads()
-    const { loading, play, stop } = useSoundPlayer({ url: currentLibrary?.url, note })
+export default function ButtonPad({ note, player }) {
     const isFlat = String(note).includes("#")
+    const loading = false
 
     const handlePlay = (e) => {
         clearButtons(e.target)
 
         if (e.target.checked) {
-            return play()
+            return player.play()
         }
 
-        stop()
+        player.stop()
     }
 
     const clearButtons = (currentCheckbox) => {

@@ -1,43 +1,36 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { Howl } from 'howler'
+import { useStorePads } from '../store'
 
-const useSoundPlayer = ({ url, note }) => {
-    const [loading, setLoading] = useState(true)
-    const player = useRef(null)
+const useSoundPlayer = () => {
+    const { pads, libraries } = useStorePads()
 
     useEffect(() => {
-        setLoading(true)
-
-        player.current = new Howl({
-            src: `${url}/${note}.mp3`,
-            loop: true,
-            html5: true,
-            onload: () => {
-                setLoading(false)
+        const listPads = libraries.map((library) => {
+            return {
+                [library.name]: library.sources.map((source) => {
+                    return {
+                        note: source.note,
+                        player: new Howl({
+                            src: `${source.url}`,
+                            loop: true,
+                            html5: true,
+                            mute: false
+                        })
+                    }
+                })
             }
-        })
+        }).reduce((result, currentObject) => {
+            return { ...result, ...currentObject };
+        }, {});
 
-        return () => {
-            if (player.current) {
-                player.current.stop()
-                player.current = null
-            }
-        }
-    }, [url, note])
+        console.log(listPads)
 
-    const play = () => {
-        if (player.current) {
-            player.current.play()
-        }
-    }
+        useStorePads.setState({ pads: listPads })
 
-    const stop = () => {
-        if (player.current) {
-            player.current.stop()
-        }
-    }
+    }, [libraries])
 
-    return { loading, play, stop }
+    return { pads }
 }
 
 export default useSoundPlayer

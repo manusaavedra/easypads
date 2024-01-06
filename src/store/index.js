@@ -1,25 +1,83 @@
 import { create } from "zustand";
 
 export const useStorePads = create(() => ({
-    currentLibrary: null,
+    pads: [],
+    currentLibrary: {
+        name: "Default"
+    },
     libraries: [
         {
             name: "Default",
-            url: "/pads/default"
+            sources: [
+                {
+                    note: 'C',
+                    url: '/pads/default/C.mp3'
+                },
+                {
+                    note: 'C#',
+                    url: '/pads/default/C#.mp3'
+                },
+                {
+                    note: 'D',
+                    url: '/pads/default/D.mp3'
+                },
+                {
+                    note: 'D#',
+                    url: '/pads/default/D#.mp3'
+                },
+                {
+                    note: 'E',
+                    url: '/pads/default/E.mp3'
+                },
+                {
+                    note: 'F',
+                    url: '/pads/default/F.mp3'
+                },
+                {
+                    note: 'F#',
+                    url: '/pads/default/F#.mp3'
+                },
+                {
+                    note: 'G',
+                    url: '/pads/default/G.mp3'
+                },
+                {
+                    note: 'G#',
+                    url: '/pads/default/G#.mp3'
+                },
+                {
+                    note: 'A',
+                    url: '/pads/default/A.mp3'
+                },
+                {
+                    note: 'A#',
+                    url: '/pads/default/A#.mp3'
+                },
+                {
+                    note: 'B',
+                    url: '/pads/default/B.mp3'
+                }
+            ],
+            disabled: false
         },
         {
             name: "Worship",
-            url: "/pads/worship",
-            disabled: true
+            sources: [
+                {
+                    note: 'C',
+                    url: '/pads/worship/C.ogg'
+                }
+            ],
+            disabled: false
         },
         {
             name: "Clean organ",
-            url: "/pads/cleanorgan",
+            sources: [],
             disabled: true
         },
         {
             name: "Dark pad",
-            url: "/pads/dark",
+            sources: [],
             disabled: true
         }
     ]

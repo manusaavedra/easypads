@@ -37,7 +37,6 @@ export default function ListLibraries() {
                     })
                 }
             </div>
-            {/**<p className="text-xs text-center">Powered by <a className="underline text-blue-500" href="https://github.com/manusaavedra">Manuel Saavedra</a> | this project uses react js and howler js</p> */}
         </footer>
     )
 }
