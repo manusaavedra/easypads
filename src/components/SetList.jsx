@@ -1,4 +1,5 @@
 import { FiMinus, FiPlus } from "react-icons/fi"
+import { CgLoadbarSound } from "react-icons/cg";
 import useSetlist from "../hooks/useSetlist"
 import { useStorePads } from "../store"
 import { useState } from "react"
@@ -10,7 +11,7 @@ export default function SetList() {
     const searchInput = useInput("")
     const [currentPad, setCurrentPad] = useState(null)
 
-    const handleSelectedSong = ({ library, key }) => {
+    const handleSelectedSong = ({ library, key, title }) => {
         const currentLibrary = pads[library] || []
         const pad = currentLibrary.find((pad) => {
             return pad.note === key
@@ -18,7 +19,7 @@ export default function SetList() {
 
         if (!pad) return
 
-        if (currentPad && currentPad.library === library && currentPad.pad.note === key) {
+        if (currentPad && currentPad.library === library && currentPad.pad.note === key && currentPad.title === title) {
             pad.player.stop();
             setCurrentPad(null);
         } else {
@@ -32,7 +33,8 @@ export default function SetList() {
             pad.player.play();
             setCurrentPad({
                 library,
-                pad
+                pad,
+                title
             });
         }
     }
@@ -41,10 +43,10 @@ export default function SetList() {
 
     return (
         <div className="relative">
-            <div className="sticky top-0 left-0 mb-4 bg-neutral-800 w-full">
+            <div className="sticky top-0 left-0 mb-4 z-20 bg-neutral-800 w-full">
                 <input
-                    className="w-full text-2xl"
-                    type="search"
+                    className="w-full md:text-2xl"
+                    type="text"
                     placeholder="Buscar..."
                     onChange={searchInput.handleChange}
                     value={searchInput.value}
@@ -52,12 +54,12 @@ export default function SetList() {
             </div>
             {
                 filteredSong(searchInput.value).sort((a, b) => b.fixed - a.fixed).map((song) => {
-                    const isPlaying = (currentPad?.library === song.library) && (currentPad?.pad.note === song.key)
+                    const isPlaying = (currentPad?.library === song.library) && (currentPad?.pad.note === song.key) && (currentPad?.title === song.title)
                     const isFixed = song?.fixed
                     return (
                         <div
                             key={song.title}
-                            className={`flex ${isPlaying ? 'bg-indigo-400 text-indigo-900 active:bg-indigo-300' : 'active:bg-neutral-700'} border-b border-neutral-700 py-2 px-1 items-center justify-between`}
+                            className={`flex active:bg-neutral-700 border-b border-neutral-700 py-2 px-1 items-center justify-between`}
                         >
                             <div onClick={() => {
                                 isFixed ? handleSelectedSong(song) : noOp()
@@ -67,17 +69,20 @@ export default function SetList() {
                                     <h4 className="font-semibold truncate">{song.title}</h4>
                                     {
                                         isPlaying && (
-                                            <picture className="w-6">
-                                                <img className="" src="/sound.gif" alt="wave" />
-                                            </picture>
+                                            <div className="icon-audio-meter">
+                                                <div className="bars-meter"></div>
+                                                <div className="bars-meter"></div>
+                                                <div className="bars-meter"></div>
+                                                <div className="bars-meter"></div>
+                                            </div>
                                         )
                                     }
                                 </div>
-                                <span className={`text-neutral-500 ${isPlaying ? 'text-indigo-900' : ''} italic text-opacity-50`}>{song.library}</span>
+                                <span className={`italic`}>{song.library}</span>
                             </div>
                             <div className={`flex items-stretch gap-2`}>
                                 <button className="bg-transparent border-none" onClick={() => fixedSong(song)}>
-                                    {isFixed ? <FiMinus size={16} /> : <FiPlus size={16} />}
+                                    {isFixed ? <FiMinus size={24} /> : <FiPlus size={24} />}
                                 </button>
                             </div>
                         </div>

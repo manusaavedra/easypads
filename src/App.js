@@ -12,8 +12,6 @@ function App() {
 
   const padsCurrentLibrary = pads[currentLibrary.name] || []
 
-  console.log(padsCurrentLibrary)
-
   return (
     <div className="h-screen select-none grid grid-rows-[50px_50px_1fr]">
       <Header />

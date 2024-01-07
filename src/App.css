@@ -25,3 +25,46 @@ button:active {
 ::-webkit-scrollbar {
   display: none;
 }
+
+.icon-audio-meter {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.icon-audio-meter .bars-meter {
+  width: 4px;
+  height: 16px;
+  @apply bg-indigo-500;
+  animation-name: bar;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+}
+
+.icon-audio-meter .bars-meter:nth-child(1) {
+  animation-duration: .7s;
+}
+
+
+.icon-audio-meter .bars-meter:nth-child(2) {
+  animation-duration: .4s;
+}
+
+.icon-audio-meter .bars-meter:nth-child(3) {
+  animation-duration: .5s;
+}
+
+.icon-audio-meter .bars-meter:nth-child(4) {
+  animation-duration: .6s;
+}
+
+@keyframes bar {
+  from {
+    height: 0;
+    transform-origin: left bottom;
+  }
+
+  to {
+    height: 16px;
+  }
+}

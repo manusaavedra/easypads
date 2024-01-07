@@ -24,8 +24,6 @@ const useSoundPlayer = () => {
             return { ...result, ...currentObject };
         }, {});
 
-        console.log(listPads)
-
         useStorePads.setState({ pads: listPads })
 
     }, [libraries])

@@ -7,7 +7,9 @@ import FormSetList from "./FormSetList";
 export default function Header() {
     return (
         <header className="w-full py-2 px-2 bg-neutral-900 shadow-md flex justify-between items-center">
-            <h1 className="text-base font-semibold">EasyPads</h1>
+            <picture className="w-10">
+                <img src="/logo.svg" alt="easypads" />
+            </picture>
             <Metronome />
             <div className="flex items-center gap-2">
                 <ModalButton
@@ -18,6 +20,7 @@ export default function Header() {
                 <ModalButton
                     contentClassName="max-h-[500px] h-full overflow-y-auto"
                     buttonContent={<BsMenuApp size={24} />}
+                    position="top"
                 >
                     <SetList />
                 </ModalButton>
