@@ -41,6 +41,8 @@ export default function SetList() {
 
     const noOp = () => { }
 
+    const listSong = filteredSong(searchInput.value)
+
     return (
         <div className="relative">
             <div className="sticky top-0 left-0 mb-4 z-20 bg-neutral-800 w-full">
@@ -52,43 +54,53 @@ export default function SetList() {
                     value={searchInput.value}
                 />
             </div>
-            {
-                filteredSong(searchInput.value).sort((a, b) => b.fixed - a.fixed).map((song) => {
-                    const isPlaying = (currentPad?.library === song.library) && (currentPad?.pad.note === song.key) && (currentPad?.title === song.title)
-                    const isFixed = song?.fixed
-                    return (
-                        <div
-                            key={song.title}
-                            className={`flex active:bg-neutral-700 border-b border-neutral-700 py-2 px-1 items-center justify-between`}
-                        >
-                            <div onClick={() => {
-                                isFixed ? handleSelectedSong(song) : noOp()
-                            }} className={`w-full ${!isFixed ? 'opacity-30' : ''} grid grid-cols-[40px_minmax(40px,1fr)_80px] gap-2`}>
-                                <span className="text-xs bg-black bg-opacity-50 text-white font-semibold rounded-md px-4 py-1">{song.key}</span>
-                                <div className="flex items-center gap-2">
-                                    <h4 className="font-semibold truncate">{song.title}</h4>
-                                    {
-                                        isPlaying && (
-                                            <div className="icon-audio-meter">
-                                                <div className="bars-meter"></div>
-                                                <div className="bars-meter"></div>
-                                                <div className="bars-meter"></div>
-                                                <div className="bars-meter"></div>
-                                            </div>
-                                        )
-                                    }
-                                </div>
-                                <span className={`italic`}>{song.library}</span>
-                            </div>
-                            <div className={`flex items-stretch gap-2`}>
-                                <button className="bg-transparent border-none" onClick={() => fixedSong(song)}>
-                                    {isFixed ? <FiMinus size={24} /> : <FiPlus size={24} />}
-                                </button>
-                            </div>
-                        </div>
+            <div>
+                {
+                    listSong.length === 0 && (
+                        <picture className="flex flex-col gap-2 w-60 text-center mx-auto">
+                            <img className="w-full" src="/empty-playlist.svg" alt="empty playlist" />
+                            <span className="font-semibold">No hay nada en la lista aún</span>
+                        </picture>
                     )
-                })
-            }
+                }
+                {
+                    listSong.sort((a, b) => b.fixed - a.fixed).map((song) => {
+                        const isPlaying = (currentPad?.library === song.library) && (currentPad?.pad.note === song.key) && (currentPad?.title === song.title)
+                        const isFixed = song?.fixed
+                        return (
+                            <div
+                                key={song.title}
+                                className={`flex active:bg-neutral-700 border-b border-neutral-700 py-2 px-1 items-center justify-between`}
+                            >
+                                <div onClick={() => {
+                                    isFixed ? handleSelectedSong(song) : noOp()
+                                }} className={`w-full ${!isFixed ? 'opacity-30' : ''} grid grid-cols-[40px_minmax(40px,1fr)_80px] gap-2`}>
+                                    <span className="text-xs bg-black bg-opacity-50 text-white font-semibold rounded-md px-4 py-1">{song.key}</span>
+                                    <div className="flex items-center gap-2">
+                                        <h4 className="font-semibold truncate">{song.title}</h4>
+                                        {
+                                            isPlaying && (
+                                                <div className="icon-audio-meter">
+                                                    <div className="bars-meter"></div>
+                                                    <div className="bars-meter"></div>
+                                                    <div className="bars-meter"></div>
+                                                    <div className="bars-meter"></div>
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                    <span className={`italic`}>{song.library}</span>
+                                </div>
+                                <div className={`flex items-stretch gap-2`}>
+                                    <button className="bg-transparent border-none" onClick={() => fixedSong(song)}>
+                                        {isFixed ? <FiMinus size={24} /> : <FiPlus size={24} />}
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+            </div>
         </div>
     )
 }
