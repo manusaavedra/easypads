@@ -68,7 +68,7 @@ export const useStorePads = create(() => ({
                     url: '/pads/worship/C.ogg'
                 }
             ],
-            disabled: false
+            disabled: true
         },
         {
             name: "Clean organ",
