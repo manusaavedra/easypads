@@ -38,6 +38,13 @@ export default function SetList() {
         }
     }
 
+    const handleReset = (pad) => {
+        if (currentPad?.title === pad.title) {
+            pad.player.stop()
+            setCurrentPad(null)
+        }
+    }
+
     const noOp = () => { }
 
     const listSong = filteredSong(searchInput.value)
@@ -96,10 +103,10 @@ export default function SetList() {
                                     </div>
                                 </div>
                                 <div className={`flex items-stretch gap-1`}>
-                                    <button className="bg-transparent p-1 border-none" onClick={() => removeSong(song)}>
+                                    <button className="bg-transparent p-1 border-none" onClick={() => removeSong(song, handleReset)}>
                                         <FiTrash size={24} />
                                     </button>
-                                    <button className="bg-transparent p-1 border-none" onClick={() => fixedSong(song)}>
+                                    <button className="bg-transparent p-1 border-none" onClick={() => fixedSong(song, handleReset)}>
                                         {isFixed ? <FiMinus size={24} /> : <FiPlus size={24} />}
                                     </button>
                                 </div>

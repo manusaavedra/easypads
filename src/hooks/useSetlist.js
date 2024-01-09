@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import { useStoreSongs } from "../store";
+import { useStorePads, useStoreSongs } from "../store";
 
 export default function useSetlist() {
     const { setlist, songs } = useStoreSongs()
+    const { pads } = useStorePads()
 
     useEffect(() => {
         const localSongs = localStorage.getItem('songlist')
@@ -17,13 +18,24 @@ export default function useSetlist() {
         localStorage.setItem('songlist', JSON.stringify([...newSongs, newSong]))
     }
 
-    const removeSong = (deleteSong) => {
+    const removeSong = (deleteSong, onDelete) => {
+        const pad = pads[deleteSong.library].find((pad) => {
+            return pad.note === deleteSong.key
+        })
+
         const newSongs = songs.filter((song) => song.title !== deleteSong.title)
         useStoreSongs.setState({ songs: newSongs })
         localStorage.setItem('songlist', JSON.stringify(newSongs))
+
+        onDelete && onDelete({ ...pad, title: deleteSong.title })
     }
 
-    const fixedSong = (tagSong) => {
+    const fixedSong = (tagSong, onFixed) => {
+        const pad = pads[tagSong.library].find((pad) => {
+            return pad.note === tagSong.key
+        })
+
+
         const newSongs = songs.map((song) => {
             if (tagSong.title === song.title) {
                 return {
@@ -33,6 +45,8 @@ export default function useSetlist() {
             }
             return song
         })
+
+        onFixed && onFixed({ ...pad, title: tagSong?.title })
 
         useStoreSongs.setState({ songs: newSongs })
         localStorage.setItem('songlist', JSON.stringify(newSongs))
