@@ -24,7 +24,7 @@ export default function ListLibraries() {
                         return (
                             <button
                                 key={library.name}
-                                className={`${isSelected ? 'border-blue-800' : ''} ${isDisabled ? 'opacity-30 pointer-events-none' : ''} border-2 min-w-fit`}
+                                className={`${isSelected ? 'border-indigo-500' : ''} ${isDisabled ? 'opacity-30 pointer-events-none' : ''} border-2 min-w-fit`}
                                 onClick={() => {
                                     !isDisabled
                                         ? handleChangeLibrary(library)

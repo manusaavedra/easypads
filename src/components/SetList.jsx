@@ -1,4 +1,4 @@
-import { FiDelete, FiMinus, FiPlus, FiTrash } from "react-icons/fi"
+import { FiMinus, FiPlus, FiTrash } from "react-icons/fi"
 import useSetlist from "../hooks/useSetlist"
 import { useStorePads } from "../store"
 import { useState } from "react"
@@ -60,7 +60,8 @@ export default function SetList() {
 
     return (
         <div className="relative">
-            <div className="sticky top-0 left-0 mb-4 z-20 bg-neutral-800 w-full">
+            <div className="sticky top-[-16px] pt-2 left-0 mb-4 z-20 bg-neutral-800 w-full">
+                <h4 className="text-xl font-semibold mb-2">Setlist</h4>
                 <input
                     className="w-full md:text-2xl"
                     type="text"
