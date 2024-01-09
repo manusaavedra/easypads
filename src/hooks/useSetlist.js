@@ -17,6 +17,12 @@ export default function useSetlist() {
         localStorage.setItem('songlist', JSON.stringify([...newSongs, newSong]))
     }
 
+    const removeSong = (deleteSong) => {
+        const newSongs = songs.filter((song) => song.title !== deleteSong.title)
+        useStoreSongs.setState({ songs: newSongs })
+        localStorage.setItem('songlist', JSON.stringify(newSongs))
+    }
+
     const fixedSong = (tagSong) => {
         const newSongs = songs.map((song) => {
             if (tagSong.title === song.title) {
@@ -42,6 +48,7 @@ export default function useSetlist() {
         setlist,
         songs,
         toSongList,
+        removeSong,
         fixedSong,
         filteredSong
     }
