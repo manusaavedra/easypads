@@ -3,6 +3,8 @@ import useSetlist from "../hooks/useSetlist"
 import { useStorePads } from "../store"
 import { useState } from "react"
 import useInput from "../hooks/useInput"
+import ModalButton from "./ModalButton"
+import FormSetList from "./FormSetList"
 
 export default function SetList() {
     const { songs, filteredSong, fixedSong, removeSong } = useSetlist()
@@ -61,7 +63,20 @@ export default function SetList() {
     return (
         <div className="relative">
             <div className="sticky top-[-16px] pt-2 left-0 mb-4 z-20 bg-neutral-800 w-full">
-                <h4 className="text-xl font-semibold mb-2">Setlist</h4>
+                <div className="flex items-center justify-between">
+                    <h4 className="text-xl font-semibold mb-2">Setlist</h4>
+                    <ModalButton
+                        className="bg-neutral-900 flex items-center gap-2 font-semibold"
+                        buttonContent={
+                            <>
+                                <FiPlus size={24} />
+                                Agregar
+                            </>
+                        }
+                    >
+                        <FormSetList />
+                    </ModalButton>
+                </div>
                 <input
                     className="w-full md:text-2xl"
                     type="text"
