@@ -1,12 +1,11 @@
 import { FiMinus, FiPlus } from "react-icons/fi"
-import { CgLoadbarSound } from "react-icons/cg";
 import useSetlist from "../hooks/useSetlist"
 import { useStorePads } from "../store"
 import { useState } from "react"
 import useInput from "../hooks/useInput"
 
 export default function SetList() {
-    const { filteredSong, fixedSong } = useSetlist()
+    const { songs, filteredSong, fixedSong } = useSetlist()
     const { pads } = useStorePads()
     const searchInput = useInput("")
     const [currentPad, setCurrentPad] = useState(null)
@@ -43,6 +42,15 @@ export default function SetList() {
 
     const listSong = filteredSong(searchInput.value)
 
+    if (songs.length === 0) {
+        return (
+            <picture className="flex flex-col gap-2 w-60 text-center mx-auto">
+                <img className="w-full" src="/empty-playlist.svg" alt="empty playlist" />
+                <span className="font-semibold">No hay nada en la lista aún</span>
+            </picture>
+        )
+    }
+
     return (
         <div className="relative">
             <div className="sticky top-0 left-0 mb-4 z-20 bg-neutral-800 w-full">
@@ -55,14 +63,6 @@ export default function SetList() {
                 />
             </div>
             <div>
-                {
-                    listSong.length === 0 && (
-                        <picture className="flex flex-col gap-2 w-60 text-center mx-auto">
-                            <img className="w-full" src="/empty-playlist.svg" alt="empty playlist" />
-                            <span className="font-semibold">No hay nada en la lista aún</span>
-                        </picture>
-                    )
-                }
                 {
                     listSong.sort((a, b) => b.fixed - a.fixed).map((song) => {
                         const isPlaying = (currentPad?.library === song.library) && (currentPad?.pad.note === song.key) && (currentPad?.title === song.title)
