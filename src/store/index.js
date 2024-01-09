@@ -15,7 +15,7 @@ export const useStorePads = create(() => ({
                 },
                 {
                     note: 'C#',
-                    url: '/pads/default/C#.mp3'
+                    url: '/pads/default/C-flat.mp3'
                 },
                 {
                     note: 'D',
@@ -23,7 +23,7 @@ export const useStorePads = create(() => ({
                 },
                 {
                     note: 'D#',
-                    url: '/pads/default/D#.mp3'
+                    url: '/pads/default/D-flat.mp3'
                 },
                 {
                     note: 'E',
@@ -35,7 +35,7 @@ export const useStorePads = create(() => ({
                 },
                 {
                     note: 'F#',
-                    url: '/pads/default/F#.mp3'
+                    url: '/pads/default/F-flat.mp3'
                 },
                 {
                     note: 'G',
@@ -43,7 +43,7 @@ export const useStorePads = create(() => ({
                 },
                 {
                     note: 'G#',
-                    url: '/pads/default/G#.mp3'
+                    url: '/pads/default/G-flat.mp3'
                 },
                 {
                     note: 'A',
@@ -51,7 +51,7 @@ export const useStorePads = create(() => ({
                 },
                 {
                     note: 'A#',
-                    url: '/pads/default/A#.mp3'
+                    url: '/pads/default/A-flat.mp3'
                 },
                 {
                     note: 'B',
